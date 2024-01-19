@@ -12,11 +12,17 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return "";
+  const user = await authenticator.isAuthenticated(request, {
+    successRedirect: "/",
+  });
+  return user;
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  return "";
+  return authenticator.authenticate("form", request, {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  });
 };
 
 export default function Login() {
@@ -66,7 +72,7 @@ export default function Login() {
         <p className="text-gray-600">
           Dont have an account?
           <Link to="/signup">
-            <span className="text-red-600 px-2 underline">Signup</span>
+            <span className="text-red-600 px-2 underline">Sign Up</span>
           </Link>
         </p>
       </div>
